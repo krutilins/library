@@ -51,7 +51,7 @@ export class BookResolver {
   }
 
   @Mutation(() => BookDto)
-  async assignAuthorsByBookId(
+  async assignAuthorsToBook(
     @Args('data') assignAuthorsInput: AssignAuthorsInput,
   ): Promise<BookDto> {
     const { bookId, authorIds } = assignAuthorsInput;
