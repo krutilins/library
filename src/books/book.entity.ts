@@ -15,9 +15,9 @@ export class Book {
   @Column()
   title: string;
 
-  @ManyToMany(() => Author, (author) => author.books, {
-    cascade: true,
+  @ManyToMany(() => Author, (author) => author.books)
+  @JoinTable({
+    name: 'books_authors', // table name for the junction table of this relation
   })
-  @JoinTable()
   authors: Author[];
 }

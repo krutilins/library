@@ -5,7 +5,9 @@ import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const logger = new Logger(bootstrap.name);
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'debug', 'log', 'verbose'],
+  });
   const configService = app.get(ConfigService);
 
   const port = Number.parseInt(configService.get<string>('port'));
