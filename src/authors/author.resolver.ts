@@ -13,6 +13,7 @@ import { BookDto } from 'src/books/dto';
 import { UpdateAuthorMetadataInput } from './dto/update-author-metadata.input';
 import { AssignBooksInput } from './dto/assign-books.input';
 import { Author } from './entity';
+import { ILoaders } from 'src/common/loaders/interfaces';
 
 @Resolver(() => AuthorDto)
 export class AuthorsResolver {
@@ -36,7 +37,7 @@ export class AuthorsResolver {
   }
 
   @Mutation(() => AuthorDto)
-  async updateAuthor(
+  async updateAuthorMetadata(
     @Args('id') id: number,
     @Args('data') updateAuthorInput: UpdateAuthorMetadataInput,
   ): Promise<AuthorDto> {
@@ -58,7 +59,7 @@ export class AuthorsResolver {
   @ResolveField(() => [BookDto])
   async books(
     @Parent() author: Author,
-    @Context('loaders') loaders,
+    @Context('loaders') loaders: ILoaders,
   ): Promise<BookDto[]> {
     if (!author.bookIds) return [];
 

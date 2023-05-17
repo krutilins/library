@@ -1,3 +1,5 @@
-export interface ICtx {
-  loaders: any;
+import { ILoaders } from 'src/common/loaders/interfaces';
+
+export interface IGraphQLCtx {
+  loaders: ILoaders;
 }

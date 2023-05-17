@@ -12,6 +12,7 @@ import { BookDto, CreateBookInput, UpdateBookMetadataInput } from './dto';
 import { AuthorDto } from 'src/authors/dto';
 import { AssignAuthorsInput } from './dto/assign-book-author.input';
 import { Book } from './entity';
+import { ILoaders } from 'src/common/loaders/interfaces';
 
 @Resolver(() => BookDto)
 export class BookResolver {
@@ -59,7 +60,7 @@ export class BookResolver {
   @ResolveField(() => [AuthorDto])
   async authors(
     @Parent() book: Book,
-    @Context('loaders') loaders: any,
+    @Context('loaders') loaders: ILoaders,
   ): Promise<AuthorDto[]> {
     if (!book.authorIds) return [];
 

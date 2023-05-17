@@ -1,6 +1,12 @@
-import { BooksService } from './book.service';
-import { createBaseLoader } from 'src/base/base.loader';
+import * as DataLoader from 'dataloader';
 
-export function createBooksLoader(bookService: BooksService) {
-  return createBaseLoader(bookService);
+import { createBaseLoader } from 'src/base';
+
+import { BooksService } from './book.service';
+import { Book } from './entity';
+
+export function createBooksLoader(
+  bookService: BooksService,
+): DataLoader<number, Book, number> {
+  return createBaseLoader<Book>(bookService);
 }

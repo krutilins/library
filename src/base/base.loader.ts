@@ -6,7 +6,7 @@ import { BaseService } from './base.service';
 
 export function createBaseLoader<T extends BaseEntity>(
   service: BaseService<T>,
-) {
+): DataLoader<number, T, number> {
   return new DataLoader<number, T>(async (ids) => {
     const data = await service.findByIds(ids);
 

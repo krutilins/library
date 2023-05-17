@@ -1,6 +1,12 @@
-import { AuthorService } from './author.service';
-import { createBaseLoader } from 'src/base/base.loader';
+import * as DataLoader from 'dataloader';
 
-export function createAuthorsLoader(authorService: AuthorService) {
-  return createBaseLoader(authorService);
+import { createBaseLoader } from 'src/base';
+
+import { AuthorService } from './author.service';
+import { Author } from './entity';
+
+export function createAuthorsLoader(
+  authorService: AuthorService,
+): DataLoader<number, Author, number> {
+  return createBaseLoader<Author>(authorService);
 }
