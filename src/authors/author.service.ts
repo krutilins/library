@@ -1,5 +1,5 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
-import { Author } from './author.entity';
+import { Author } from './entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { UpdateAuthorMetadataInput } from './dto/update-author-metadata.input';
@@ -34,7 +34,7 @@ export class AuthorService {
     return authors;
   }
 
-  async findByIds(authorIds: number[]): Promise<Author[]> {
+  async findByIds(authorIds: Readonly<number[]>): Promise<Author[]> {
     const authors = await this.authorRepository.findBy({ id: In(authorIds) });
     return authors;
   }

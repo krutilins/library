@@ -4,8 +4,6 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-console.log(path.resolve(__dirname + './../../../.env'));
-
 dotenv.config({
   path: path.resolve(__dirname + './../../../.env'),
 });
@@ -28,6 +26,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       entities: [path.resolve(__dirname, '../../**/*entity{.ts,.js}')],
       migrationsTableName: 'migration',
       migrations: [path.resolve(__dirname, '../../db/migrations/*.{js,ts}')],
+      logging: true,
     };
 
     this.logger.verbose(options);

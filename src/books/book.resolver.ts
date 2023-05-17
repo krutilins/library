@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -8,16 +9,13 @@ import {
 } from '@nestjs/graphql';
 import { BooksService } from './book.service';
 import { BookDto, CreateBookInput, UpdateBookMetadataInput } from './dto';
-import { AuthorService } from 'src/authors/author.service';
 import { AuthorDto } from 'src/authors/dto';
 import { AssignAuthorsInput } from './dto/assign-book-author.input';
+import { Book } from './entity';
 
 @Resolver(() => BookDto)
 export class BookResolver {
-  constructor(
-    private readonly booksService: BooksService,
-    private readonly authorsService: AuthorService,
-  ) {}
+  constructor(private readonly booksService: BooksService) {}
 
   @Query(() => [BookDto])
   async books(): Promise<BookDto[]> {
@@ -59,7 +57,19 @@ export class BookResolver {
   }
 
   @ResolveField(() => [AuthorDto])
-  async authors(@Parent() book: BookDto): Promise<AuthorDto[]> {
-    return this.authorsService.findByBookId(book.id);
+  async authors(
+    @Parent() book: Book,
+    @Context('loaders') loaders: any,
+  ): Promise<AuthorDto[]> {
+    if (!book.authorIds) return [];
+
+    const authors = [];
+
+    for (const authorId of book.authorIds) {
+      const author = await loaders.authorsLoader.load(authorId);
+      authors.push(author);
+    }
+
+    return authors.filter(Boolean);
   }
 }

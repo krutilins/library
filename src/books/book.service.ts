@@ -1,7 +1,7 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { Book } from './book.entity';
+import { Book } from './entity';
 import { AuthorService } from 'src/authors/author.service';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class BooksService {
     return this.booksRepository.findOneBy({ id });
   }
 
-  async findByIds(bookIds: number[]): Promise<Book[]> {
+  async findByIds(bookIds: Readonly<number[]>): Promise<Book[]> {
     const authors = await this.booksRepository.findBy({ id: In(bookIds) });
     return authors;
   }
@@ -44,9 +44,7 @@ export class BooksService {
     bookId: number,
     authorIds: number[],
   ): Promise<Book> {
-    const book = await this.booksRepository.findOne({
-      where: { id: bookId },
-    });
+    const book = await this.findById(bookId);
 
     if (!book) {
       throw new Error('Book not found');
@@ -57,12 +55,5 @@ export class BooksService {
     book.authors = authors;
 
     return await this.booksRepository.save(book);
-  }
-
-  async findByAuthorId(authorId: number): Promise<Book[]> {
-    const books = await this.booksRepository.find({
-      where: { authors: { id: authorId } },
-    });
-    return books;
   }
 }

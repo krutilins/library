@@ -1,7 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { AuthorsResolver } from './author.resolver';
-import { Author } from './author.entity';
+import { Author } from './entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BookModule } from 'src/books/book.module';
 
