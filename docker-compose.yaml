@@ -14,17 +14,21 @@ services:
     networks:
       - library-network
 
-  nest:
+  api:
+    env_file:
+      - .env
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    command: npm run start:dev
+      dockerfile: Dockerfile
+      target: ${APP_ENV}
+    command: sh -c "yarn typeorm:migration:run && yarn run start:dev"  
     depends_on:
       - mysql
     ports:
       - 3000:3000
     volumes:
       - .:/app
+      - /app/node_modules
     networks:
       - library-network
 
