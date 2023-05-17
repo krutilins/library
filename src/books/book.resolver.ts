@@ -24,7 +24,7 @@ export class BookResolver {
 
   @Query(() => BookDto)
   async book(@Args('id') id: number): Promise<BookDto> {
-    return this.booksService.findById(id);
+    return this.booksService.findOneById(id);
   }
 
   @Mutation(() => BookDto)

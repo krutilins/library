@@ -16,8 +16,8 @@ export class Author {
   name: string;
 
   @ManyToMany(() => Book, (book) => book.authors)
-  books: Book[];
+  books?: Book[];
 
   @RelationId((author: Author) => author.books)
-  bookIds: number[];
+  bookIds?: number[];
 }

@@ -3,48 +3,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Book } from './entity';
 import { AuthorService } from 'src/authors/author.service';
+import { BaseService } from 'src/base';
 
 @Injectable()
-export class BooksService {
+export class BooksService extends BaseService<Book> {
   constructor(
     @InjectRepository(Book)
-    private readonly booksRepository: Repository<Book>,
+    protected readonly repository: Repository<Book>,
     @Inject(forwardRef(() => AuthorService))
     private readonly authorService: AuthorService,
-  ) {}
-
-  async findAll(): Promise<Book[]> {
-    return this.booksRepository.find();
-  }
-
-  async findById(id: number): Promise<Book> {
-    return this.booksRepository.findOneBy({ id });
-  }
-
-  async findByIds(bookIds: Readonly<number[]>): Promise<Book[]> {
-    const authors = await this.booksRepository.findBy({ id: In(bookIds) });
-    return authors;
-  }
-
-  async create(bookData: Partial<Book>): Promise<Book> {
-    const book = this.booksRepository.create(bookData);
-    return this.booksRepository.save(book);
-  }
-
-  async update(id: number, bookData: Partial<Book>): Promise<Book> {
-    await this.booksRepository.update(id, bookData);
-    return this.booksRepository.findOneBy({ id });
-  }
-
-  async delete(id: number): Promise<void> {
-    await this.booksRepository.delete(id);
+  ) {
+    super();
   }
 
   async assignAuthorsByBookId(
     bookId: number,
     authorIds: number[],
   ): Promise<Book> {
-    const book = await this.findById(bookId);
+    const book = await this.findOneById(bookId);
 
     if (!book) {
       throw new Error('Book not found');
@@ -54,6 +30,6 @@ export class BooksService {
 
     book.authors = authors;
 
-    return await this.booksRepository.save(book);
+    return await this.repository.save(book);
   }
 }

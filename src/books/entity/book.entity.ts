@@ -20,7 +20,7 @@ export class Book {
   @JoinTable({
     name: 'books_authors', // table name for the junction table of this relation
   })
-  authors: Author[];
+  authors?: Author[];
 
   @RelationId((book: Book) => book.authors)
   authorIds?: number[];

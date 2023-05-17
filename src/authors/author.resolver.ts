@@ -9,19 +9,14 @@ import {
 } from '@nestjs/graphql';
 import { AuthorService } from './author.service';
 import { AuthorDto, CreateAuthorInput } from './dto';
-import { BooksService } from 'src/books/book.service';
 import { BookDto } from 'src/books/dto';
 import { UpdateAuthorMetadataInput } from './dto/update-author-metadata.input';
 import { AssignBooksInput } from './dto/assign-books.input';
-import { Book } from 'src/books/entity';
 import { Author } from './entity';
 
 @Resolver(() => AuthorDto)
 export class AuthorsResolver {
-  constructor(
-    private readonly authorsService: AuthorService,
-    private readonly booksService: BooksService,
-  ) {}
+  constructor(private readonly authorsService: AuthorService) {}
 
   @Query(() => [AuthorDto])
   async authors(): Promise<AuthorDto[]> {
