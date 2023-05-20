@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: ${APP_ENV}
-    command: sh -c "yarn typeorm:migration:run && yarn run start:dev"  
+    command: sh -c "yarn run start:dev"  
     depends_on:
       - mysql
     ports:

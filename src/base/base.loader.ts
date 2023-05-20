@@ -1,8 +1,8 @@
 import * as DataLoader from 'dataloader';
 
-import { mapFromArray } from 'src/utils/mapFromArray';
 import { BaseEntity } from './entity';
 import { BaseService } from './base.service';
+import { mapFromArray } from 'src/common/helpers';
 
 export function createBaseLoader<T extends BaseEntity>(
   service: BaseService<T>,
